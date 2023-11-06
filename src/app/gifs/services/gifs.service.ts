@@ -52,7 +52,12 @@ export class GifsService {
     this._tagHistory.unshift(tag);
     // se utilizan namas que 10
     this._tagHistory = this._tagHistory.splice(0, 10);
+    this.searchLocalStorage();
 
+  }
+
+  private searchLocalStorage():void{
+    localStorage.setItem('history', JSON.stringify(this._tagHistory))
   }
 
 }
