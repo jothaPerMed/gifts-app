@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GifsService } from '../../../gifs/services/gifs.service';
+import { Gif } from 'src/app/gifs/interfaces/gifs.interfaces';
 
 @Component({
   selector: 'share-sidebar',
@@ -14,8 +15,12 @@ constructor(private gifsService :GifsService){
 
 }
 
-get tags(){
+get tags():string[]{
   return this.gifsService.tagHistory;
+}
+
+public searchTags(tag : string):void{
+  this.gifsService.searchTag(tag);
 }
 
 
