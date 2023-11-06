@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams, HttpClientModule as http } from '@angular/common/http';
+
+const GIPH_API_KEY : string='IGC6SXc8BEG7LgDUvXbc62xUDMLSExay';
+const SERVICE_GIPHY : string='https://api.giphy.com/v1/gifs';
 
 @Injectable({ providedIn: 'root' })
 export class GifsService {
 
   private _tagHistory: string[] = [];
 
-  constructor() { }
+
+  constructor(private http: HttpClient) { }
 
 
   get tagHistory() {
@@ -15,7 +20,24 @@ export class GifsService {
   public searchTag(tag: string): void {
     if (tag.length == 0) return;// Si la busqueda es vacia no se realiza
     this.organizeHistory(tag);
-    console.log(this.tagHistory);
+
+    //Utilizar el fech para obtener los datos de la peticion post
+    // fetch('https://api.giphy.com/v1/gifs/search?api_key=IGC6SXc8BEG7LgDUvXbc62xUDMLSExay&q=valorant&limit=10')
+    // .then(resp=>resp.json())
+    // .then(data=>console.log(data));
+    // console.log(this.tagHistory);
+    const params = new HttpParams()
+    .set('api_key',GIPH_API_KEY)
+    .set('limit','10')
+    .set('q',tag)
+    this.http.get(`${SERVICE_GIPHY}/search`, {params: params})
+    .subscribe(res=>{
+      console.log(res);
+
+    },fail=>{
+      console.log(fail);
+
+    })
 
   }
   organizeHistory(tag: string) {
